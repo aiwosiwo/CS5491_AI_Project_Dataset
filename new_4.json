@@ -1,0 +1,62 @@
+[
+  {
+    "function": "Check if binary tree is balanced",
+    "algorithm": "Recursive Depth Check",
+    "code1": "def is_balanced(root):\n    def check(node):\n        if not node:\n            return 0\n        left = check(node.left)\n        right = check(node.right)\n        if left == -1 or right == -1 or abs(left - right) > 1:\n            return -1\n        return max(left, right) + 1\n    return check(root) != -1",
+    "code2": "def is_balanced_iterative(root):\n    stack = [(root, False)]\n    depths = {}\n    while stack:\n        node, visited = stack.pop()\n        if not node:\n            continue\n        if visited:\n            left = depths.get(node.left, 0)\n            right = depths.get(node.right, 0)\n            if abs(left - right) > 1:\n                return False\n            depths[node] = max(left, right) + 1\n        else:\n            stack.append((node, True))\n            stack.append((node.right, False))\n            stack.append((node.left, False))\n    return True"
+  },
+  {
+    "function": "Invert binary tree",
+    "algorithm": "Tree Traversal",
+    "code1": "def invert_tree_recursive(root):\n    if root:\n        root.left, root.right = invert_tree_recursive(root.right), invert_tree_recursive(root.left)\n    return root",
+    "code2": "def invert_tree_iterative(root):\n    stack = [root]\n    while stack:\n        node = stack.pop()\n        if node:\n            node.left, node.right = node.right, node.left\n            stack += [node.left, node.right]\n    return root"
+  },
+  {
+    "function": "Validate binary search tree",
+    "algorithm": "Inorder Traversal",
+    "code1": "def is_valid_bst_recursive(root, min_val=float('-inf'), max_val=float('inf')):\n    if not root:\n        return True\n    if root.val <= min_val or root.val >= max_val:\n        return False\n    return is_valid_bst_recursive(root.left, min_val, root.val) and \\\n           is_valid_bst_recursive(root.right, root.val, max_val)",
+    "code2": "def is_valid_bst_inorder(root):\n    stack = []\n    prev = None\n    while stack or root:\n        while root:\n            stack.append(root)\n            root = root.left\n        root = stack.pop()\n        if prev and root.val <= prev.val:\n            return False\n        prev = root\n        root = root.right\n    return True"
+  },
+  {
+    "function": "Lowest common ancestor in BST",
+    "algorithm": "BST Property",
+    "code1": "def lowest_common_ancestor_recursive(root, p, q):\n    if p.val < root.val and q.val < root.val:\n        return lowest_common_ancestor_recursive(root.left, p, q)\n    elif p.val > root.val and q.val > root.val:\n        return lowest_common_ancestor_recursive(root.right, p, q)\n    else:\n        return root",
+    "code2": "def lowest_common_ancestor_iterative(root, p, q):\n    while root:\n        if p.val < root.val and q.val < root.val:\n            root = root.left\n        elif p.val > root.val and q.val > root.val:\n            root = root.right\n        else:\n            return root"
+  },
+  {
+    "function": "Binary tree level order traversal",
+    "algorithm": "BFS",
+    "code1": "def level_order_recursive(root):\n    levels = []\n    def helper(node, level):\n        if not node:\n            return\n        if len(levels) == level:\n            levels.append([])\n        levels[level].append(node.val)\n        helper(node.left, level + 1)\n        helper(node.right, level + 1)\n    helper(root, 0)\n    return levels",
+    "code2": "def level_order_iterative(root):\n    if not root:\n        return []\n    queue = [root]\n    result = []\n    while queue:\n        level = []\n        for _ in range(len(queue)):\n            node = queue.pop(0)\n            level.append(node.val)\n            if node.left:\n                queue.append(node.left)\n            if node.right:\n                queue.append(node.right)\n        result.append(level)\n    return result"
+  },
+  {
+    "function": "Serialize and deserialize binary tree",
+    "algorithm": "Preorder Traversal",
+    "code1": "def serialize(root):\n    def helper(node):\n        if node:\n            vals.append(str(node.val))\n            helper(node.left)\n            helper(node.right)\n        else:\n            vals.append('#')\n    vals = []\n    helper(root)\n    return ' '.join(vals)",
+    "code2": "def deserialize(data):\n    def helper():\n        val = next(vals)\n        if val == '#':\n            return None\n        node = TreeNode(int(val))\n        node.left = helper()\n        node.right = helper()\n        return node\n    vals = iter(data.split())\n    return helper()"
+  },
+  {
+    "function": "Count complete tree nodes",
+    "algorithm": "Binary Search",
+    "code1": "def count_nodes_complete(root):\n    if not root:\n        return 0\n    left_depth = right_depth = 0\n    left = right = root\n    while left:\n        left_depth += 1\n        left = left.left\n    while right:\n        right_depth += 1\n        right = right.right\n    if left_depth == right_depth:\n        return (1 << left_depth) - 1\n    return 1 + count_nodes_complete(root.left) + count_nodes_complete(root.right)",
+    "code2": "def count_nodes_bfs(root):\n    if not root:\n        return 0\n    queue = [root]\n    count = 0\n    while queue:\n        node = queue.pop(0)\n        count += 1\n        if node.left:\n            queue.append(node.left)\n        if node.right:\n            queue.append(node.right)\n    return count"
+  },
+  {
+    "function": "Path sum in binary tree",
+    "algorithm": "DFS",
+    "code1": "def has_path_sum_recursive(root, target):\n    if not root:\n        return False\n    if not root.left and not root.right and root.val == target:\n        return True\n    return has_path_sum_recursive(root.left, target - root.val) or \\\n           has_path_sum_recursive(root.right, target - root.val)",
+    "code2": "def has_path_sum_iterative(root, target):\n    if not root:\n        return False\n    stack = [(root, root.val)]\n    while stack:\n        node, curr_sum = stack.pop()\n        if not node.left and not node.right and curr_sum == target:\n            return True\n        if node.right:\n            stack.append((node.right, curr_sum + node.right.val))\n        if node.left:\n            stack.append((node.left, curr_sum + node.left.val))\n    return False"
+  },
+  {
+    "function": "Construct binary tree from preorder and inorder",
+    "algorithm": "Divide and Conquer",
+    "code1": "def build_tree(preorder, inorder):\n    if not preorder or not inorder:\n        return None\n    root_val = preorder.pop(0)\n    root = TreeNode(root_val)\n    idx = inorder.index(root_val)\n    root.left = build_tree(preorder, inorder[:idx])\n    root.right = build_tree(preorder, inorder[idx+1:])\n    return root",
+    "code2": "def build_tree_optimized(preorder, inorder):\n    inorder_map = {val: idx for idx, val in enumerate(inorder)}\n    def helper(pre_start, in_start, in_end):\n        if in_start > in_end:\n            return None\n        root_val = preorder[pre_start]\n        root = TreeNode(root_val)\n        idx = inorder_map[root_val]\n        root.left = helper(pre_start + 1, in_start, idx - 1)\n        root.right = helper(pre_start + 1 + idx - in_start, idx + 1, in_end)\n        return root\n    return helper(0, 0, len(inorder) - 1)"
+  },
+  {
+    "function": "Flatten binary tree to linked list",
+    "algorithm": "Morris Traversal",
+    "code1": "def flatten_recursive(root):\n    def helper(node):\n        if not node:\n            return None\n        if not node.left and not node.right:\n            return node\n        left_tail = helper(node.left)\n        right_tail = helper(node.right)\n        if left_tail:\n            left_tail.right = node.right\n            node.right = node.left\n            node.left = None\n        return right_tail if right_tail else left_tail\n    helper(root)",
+    "code2": "def flatten_iterative(root):\n    while root:\n        if root.left:\n            prev = root.left\n            while prev.right:\n                prev = prev.right\n            prev.right = root.right\n            root.right = root.left\n            root.left = None\n        root = root.right"
+  }
+]

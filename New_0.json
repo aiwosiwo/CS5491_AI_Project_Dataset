@@ -1,0 +1,52 @@
+[
+  {
+    "function": "Two Pointers",
+    "code1": "def two_sum_sorted(nums, target):\n    left, right = 0, len(nums) - 1\n    while left < right:\n        current_sum = nums[left] + nums[right]\n        if current_sum == target:\n            return [left, right]\n        elif current_sum < target:\n            left += 1\n        else:\n            right -= 1\n    return [-1, -1]",
+    "code2": "def remove_duplicates(nums):\n    if not nums:\n        return 0\n    slow = 0\n    for fast in range(1, len(nums)):\n        if nums[fast] != nums[slow]:\n            slow += 1\n            nums[slow] = nums[fast]\n    return slow + 1"
+  },
+  {
+    "function": "Sliding Window",
+    "code1": "def max_subarray(nums, k):\n    max_sum = current_sum = sum(nums[:k])\n    for i in range(k, len(nums)):\n        current_sum += nums[i] - nums[i - k]\n        max_sum = max(max_sum, current_sum)\n    return max_sum",
+    "code2": "def longest_substring_no_repeat(s):\n    char_set = set()\n    left = 0\n    max_len = 0\n    for right in range(len(s)):\n        while s[right] in char_set:\n            char_set.remove(s[left])\n            left += 1\n        char_set.add(s[right])\n        max_len = max(max_len, right - left + 1)\n    return max_len"
+  },
+  {
+    "function": "Binary Search Variations",
+    "code1": "def find_peak_element(nums):\n    left, right = 0, len(nums) - 1\n    while left < right:\n        mid = (left + right) // 2\n        if nums[mid] < nums[mid + 1]:\n            left = mid + 1\n        else:\n            right = mid\n    return left",
+    "code2": "def search_rotated_sorted(nums, target):\n    left, right = 0, len(nums) - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if nums[mid] == target:\n            return mid\n        if nums[left] <= nums[mid]:\n            if nums[left] <= target < nums[mid]:\n                right = mid - 1\n            else:\n                left = mid + 1\n        else:\n            if nums[mid] < target <= nums[right]:\n                left = mid + 1\n            else:\n                right = mid - 1\n    return -1"
+  },
+  {
+    "function": "Backtracking",
+    "code1": "def subsets(nums):\n    def backtrack(start, path):\n        res.append(path.copy())\n        for i in range(start, len(nums)):\n            path.append(nums[i])\n            backtrack(i + 1, path)\n            path.pop()\n    res = []\n    backtrack(0, [])\n    return res",
+    "code2": "def permute(nums):\n    def backtrack(path):\n        if len(path) == len(nums):\n            res.append(path.copy())\n            return\n        for num in nums:\n            if num not in path:\n                path.append(num)\n                backtrack(path)\n                path.pop()\n    res = []\n    backtrack([])\n    return res"
+  },
+  {
+    "function": "Tree Traversal",
+    "code1": "def inorder_traversal(root):\n    res = []\n    def helper(node):\n        if not node:\n            return\n        helper(node.left)\n        res.append(node.val)\n        helper(node.right)\n    helper(root)\n    return res",
+    "code2": "def level_order_traversal(root):\n    from collections import deque\n    if not root:\n        return []\n    queue = deque([root])\n    res = []\n    while queue:\n        level_size = len(queue)\n        current_level = []\n        for _ in range(level_size):\n            node = queue.popleft()\n            current_level.append(node.val)\n            if node.left:\n                queue.append(node.left)\n            if node.right:\n                queue.append(node.right)\n        res.append(current_level)\n    return res"
+  },
+  {
+    "function": "Dynamic Programming",
+    "code1": "def coin_change(coins, amount):\n    dp = [float('inf')] * (amount + 1)\n    dp[0] = 0\n    for coin in coins:\n        for i in range(coin, amount + 1):\n            dp[i] = min(dp[i], dp[i - coin] + 1)\n    return dp[amount] if dp[amount] != float('inf') else -1",
+    "code2": "def longest_common_subsequence(text1, text2):\n    m, n = len(text1), len(text2)\n    dp = [[0] * (n + 1) for _ in range(m + 1)]\n    for i in range(1, m + 1):\n        for j in range(1, n + 1):\n            if text1[i - 1] == text2[j - 1]:\n                dp[i][j] = dp[i - 1][j - 1] + 1\n            else:\n                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])\n    return dp[m][n]"
+  },
+  {
+    "function": "Graph functions",
+    "code1": "def num_islands(grid):\n    def dfs(i, j):\n        if 0 <= i < len(grid) and 0 <= j < len(grid[0]) and grid[i][j] == '1':\n            grid[i][j] = '0'\n            dfs(i + 1, j)\n            dfs(i - 1, j)\n            dfs(i, j + 1)\n            dfs(i, j - 1)\n    count = 0\n    for i in range(len(grid)):\n        for j in range(len(grid[0])):\n            if grid[i][j] == '1':\n                dfs(i, j)\n                count += 1\n    return count",
+    "code2": "def course_schedule(numCourses, prerequisites):\n    from collections import defaultdict, deque\n    graph = defaultdict(list)\n    in_degree = [0] * numCourses\n    for dest, src in prerequisites:\n        graph[src].append(dest)\n        in_degree[dest] += 1\n    queue = deque([i for i in range(numCourses) if in_degree[i] == 0])\n    count = 0\n    while queue:\n        node = queue.popleft()\n        count += 1\n        for neighbor in graph[node]:\n            in_degree[neighbor] -= 1\n            if in_degree[neighbor] == 0:\n                queue.append(neighbor)\n    return count == numCourses"
+  },
+  {
+    "function": "Heap/Priority Queue",
+    "code1": "def find_kth_largest(nums, k):\n    import heapq\n    heap = []\n    for num in nums:\n        heapq.heappush(heap, num)\n        if len(heap) > k:\n            heapq.heappop(heap)\n    return heap[0]",
+    "code2": "def top_k_frequent(nums, k):\n    from collections import Counter\n    import heapq\n    count = Counter(nums)\n    return heapq.nlargest(k, count.keys(), key=count.get)"
+  },
+  {
+    "function": "Union-Find",
+    "code1": "class UnionFind:\n    def __init__(self, size):\n        self.parent = list(range(size))\n    def find(self, x):\n        if self.parent[x] != x:\n            self.parent[x] = self.find(self.parent[x])\n        return self.parent[x]\n    def union(self, x, y):\n        x_root = self.find(x)\n        y_root = self.find(y)\n        if x_root != y_root:\n            self.parent[y_root] = x_root",
+    "code2": "def num_connected_components(n, edges):\n    uf = UnionFind(n)\n    for a, b in edges:\n        uf.union(a, b)\n    return len({uf.find(i) for i in range(n)})"
+  },
+  {
+    "function": "Memoization",
+    "code1": "def fib_memo(n, memo={}):\n    if n in memo:\n        return memo[n]\n    if n <= 1:\n        return n\n    memo[n] = fib_memo(n - 1, memo) + fib_memo(n - 2, memo)\n    return memo[n]",
+    "code2": "def unique_paths(m, n, memo={}):\n    key = f\"{m},{n}\"\n    if key in memo:\n        return memo[key]\n    if m == 1 or n == 1:\n        return 1\n    memo[key] = unique_paths(m - 1, n, memo) + unique_paths(m, n - 1, memo)\n    return memo[key]"
+  }
+]

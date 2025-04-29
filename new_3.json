@@ -1,0 +1,62 @@
+[
+  {
+    "function": "Check if a string contains all unique characters",
+    "algorithm": "Hash Set",
+    "code1": "def has_unique_chars_set(s):\n    return len(set(s)) == len(s)",
+    "code2": "def has_unique_chars_array(s):\n    chars = [False] * 128\n    for char in s:\n        if chars[ord(char)]:\n            return False\n        chars[ord(char)] = True\n    return True"
+  },
+  {
+    "function": "Find the missing number in an array of 0 to n",
+    "algorithm": "Mathematical Formula",
+    "code1": "def missing_number_sum(nums):\n    n = len(nums)\n    return n * (n + 1) // 2 - sum(nums)",
+    "code2": "def missing_number_xor(nums):\n    result = 0\n    for i, num in enumerate(nums):\n        result ^= num ^ i\n    return result ^ len(nums)"
+  },
+  {
+    "function": "Rotate array by k positions",
+    "algorithm": "Array Reversal",
+    "code1": "def rotate_array_slice(nums, k):\n    k %= len(nums)\n    return nums[-k:] + nums[:-k]",
+    "code2": "def rotate_array_reverse(nums, k):\n    def reverse(arr, start, end):\n        while start < end:\n            arr[start], arr[end] = arr[end], arr[start]\n            start += 1\n            end -= 1\n    k %= len(nums)\n    reverse(nums, 0, len(nums)-1)\n    reverse(nums, 0, k-1)\n    reverse(nums, k, len(nums)-1)\n    return nums"
+  },
+  {
+    "function": "Find all duplicates in array (1 ≤ a[i] ≤ n)",
+    "algorithm": "Index Marking",
+    "code1": "def find_duplicates_abs(nums):\n    res = []\n    for num in nums:\n        idx = abs(num) - 1\n        if nums[idx] < 0:\n            res.append(abs(num))\n        else:\n            nums[idx] *= -1\n    return res",
+    "code2": "def find_duplicates_set(nums):\n    seen = set()\n    return [x for x in nums if x in seen or seen.add(x)]"
+  },
+  {
+    "function": "Merge two sorted arrays",
+    "algorithm": "Two Pointers",
+    "code1": "def merge_sorted_arrays(nums1, m, nums2, n):\n    i, j, k = m-1, n-1, m+n-1\n    while j >= 0:\n        if i >= 0 and nums1[i] > nums2[j]:\n            nums1[k] = nums1[i]\n            i -= 1\n        else:\n            nums1[k] = nums2[j]\n            j -= 1\n        k -= 1\n    return nums1",
+    "code2": "def merge_sorted_simple(nums1, nums2):\n    return sorted(nums1 + nums2)"
+  },
+  {
+    "function": "Find longest substring without repeating characters",
+    "algorithm": "Sliding Window",
+    "code1": "def length_of_longest_substring(s):\n    used = {}\n    max_len = start = 0\n    for i, c in enumerate(s):\n        if c in used and start <= used[c]:\n            start = used[c] + 1\n        else:\n            max_len = max(max_len, i - start + 1)\n        used[c] = i\n    return max_len",
+    "code2": "def length_of_longest_substring_set(s):\n    chars = set()\n    left = max_len = 0\n    for right in range(len(s)):\n        while s[right] in chars:\n            chars.remove(s[left])\n            left += 1\n        chars.add(s[right])\n        max_len = max(max_len, right - left + 1)\n    return max_len"
+  },
+  {
+    "function": "Find all anagrams in a string",
+    "algorithm": "Sliding Window with Frequency Count",
+    "code1": "def find_anagrams(s, p):\n    from collections import defaultdict\n    res = []\n    p_count = defaultdict(int)\n    s_count = defaultdict(int)\n    for char in p:\n        p_count[char] += 1\n    for i in range(len(s)):\n        s_count[s[i]] += 1\n        if i >= len(p):\n            if s_count[s[i - len(p)]] == 1:\n                del s_count[s[i - len(p)]]\n            else:\n                s_count[s[i - len(p)]] -= 1\n        if s_count == p_count:\n            res.append(i - len(p) + 1)\n    return res",
+    "code2": "def find_anagrams_sorted(s, p):\n    p_sorted = sorted(p)\n    len_p = len(p)\n    return [i for i in range(len(s) - len_p + 1) if sorted(s[i:i+len_p]) == p_sorted]"
+  },
+  {
+    "function": "Group anagrams together",
+    "algorithm": "Categorization by Sorted String",
+    "code1": "def group_anagrams(strs):\n    from collections import defaultdict\n    groups = defaultdict(list)\n    for s in strs:\n        groups[tuple(sorted(s))].append(s)\n    return list(groups.values())",
+    "code2": "def group_anagrams_count(strs):\n    from collections import defaultdict\n    groups = defaultdict(list)\n    for s in strs:\n        count = [0] * 26\n        for c in s:\n            count[ord(c) - ord('a')] += 1\n        groups[tuple(count)].append(s)\n    return list(groups.values())"
+  },
+  {
+    "function": "Find the kth largest element in array",
+    "algorithm": "Quickselect",
+    "code1": "def find_kth_largest_quickselect(nums, k):\n    import random\n    pivot = random.choice(nums)\n    left = [x for x in nums if x > pivot]\n    mid = [x for x in nums if x == pivot]\n    right = [x for x in nums if x < pivot]\n    if k <= len(left):\n        return find_kth_largest_quickselect(left, k)\n    elif k <= len(left) + len(mid):\n        return mid[0]\n    else:\n        return find_kth_largest_quickselect(right, k - len(left) - len(mid))",
+    "code2": "def find_kth_largest_sort(nums, k):\n    return sorted(nums, reverse=True)[k-1]"
+  },
+  {
+    "function": "Find minimum in rotated sorted array",
+    "algorithm": "Binary Search",
+    "code1": "def find_min_rotated(nums):\n    left, right = 0, len(nums) - 1\n    while left < right:\n        mid = (left + right) // 2\n        if nums[mid] > nums[right]:\n            left = mid + 1\n        else:\n            right = mid\n    return nums[left]",
+    "code2": "def find_min_linear(nums):\n    for i in range(1, len(nums)):\n        if nums[i] < nums[i-1]:\n            return nums[i]\n    return nums[0]"
+  }
+]

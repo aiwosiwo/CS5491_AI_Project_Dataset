@@ -1,0 +1,62 @@
+ [
+    {
+      "function": "Check if two strings are palindromes",
+      "algorithm": "String Reversal",
+      "code1": "def is_palindrome_reverse(s):\n    return s == s[::-1]",
+      "code2": "def is_palindrome_loop(s):\n    return all(s[i] == s[-i-1] for i in range(len(s)//2))"
+    },
+    {
+      "function": "Find if a number is prime",
+      "algorithm": "Divisibility Check",
+      "code1": "def is_prime_sqrt(n):\n    if n < 2: return False\n    return all(n % i != 0 for i in range(2, int(n**0.5)+1))",
+      "code2": "def is_prime_eratosthenes(n):\n    if n < 2: return False\n    sieve = [True] * (n+1)\n    for p in range(2, int(n**0.5)+1):\n        if sieve[p]:\n            for multiple in range(p*p, n+1, p):\n                sieve[multiple] = False\n    return sieve[n]"
+    },
+    {
+      "function": "Find maximum element in array",
+      "algorithm": "Linear Search",
+      "code1": "def find_max_iterative(arr):\n    max_val = arr[0]\n    for num in arr[1:]:\n        if num > max_val:\n            max_val = num\n    return max_val",
+      "code2": "def find_max_builtin(arr):\n    return max(arr)"
+    },
+    {
+      "function": "Count occurrences of element in array",
+      "algorithm": "Frequency Counting",
+      "code1": "def count_occurrences_loop(arr, x):\n    count = 0\n    for num in arr:\n        if num == x:\n            count += 1\n    return count",
+      "code2": "def count_occurrences_builtin(arr, x):\n    return arr.count(x)"
+    },
+    {
+      "function": "Remove duplicates from list",
+      "algorithm": "Hash Table",
+      "code1": "def remove_duplicates_set(lst):\n    return list(set(lst))",
+      "code2": "def remove_duplicates_loop(lst):\n    seen = []\n    for item in lst:\n        if item not in seen:\n            seen.append(item)\n    return seen"
+    },
+    {
+      "function": "Reverse an array",
+      "algorithm": "Two Pointers",
+      "code1": "def reverse_array_slicing(arr):\n    return arr[::-1]",
+      "code2": "def reverse_array_inplace(arr):\n    left, right = 0, len(arr)-1\n    while left < right:\n        arr[left], arr[right] = arr[right], arr[left]\n        left += 1\n        right -= 1\n    return arr"
+    },
+    {
+      "function": "Find common elements in two arrays",
+      "algorithm": "Set Intersection",
+      "code1": "def find_common_set(arr1, arr2):\n    return list(set(arr1) & set(arr2))",
+      "code2": "def find_common_loop(arr1, arr2):\n    return [x for x in arr1 if x in arr2]"
+    },
+    {
+      "function": "Calculate factorial of number",
+      "algorithm": "Recursion",
+      "code1": "def factorial_recursive(n):\n    return 1 if n <= 1 else n * factorial_recursive(n-1)",
+      "code2": "def factorial_iterative(n):\n    result = 1\n    for i in range(1, n+1):\n        result *= i\n    return result"
+    },
+    {
+      "function": "Check if array is sorted",
+      "algorithm": "Linear Scan",
+      "code1": "def is_sorted_loop(arr):\n    return all(arr[i] <= arr[i+1] for i in range(len(arr)-1))",
+      "code2": "def is_sorted_builtin(arr):\n    return arr == sorted(arr)"
+    },
+    {
+      "function": "Find first non-repeating character in string",
+      "algorithm": "Frequency Counting",
+      "code1": "def first_unique_char_dict(s):\n    freq = {}\n    for char in s:\n        freq[char] = freq.get(char, 0) + 1\n    for char in s:\n        if freq[char] == 1:\n            return char\n    return None",
+      "code2": "def first_unique_char_count(s):\n    for char in s:\n        if s.count(char) == 1:\n            return char\n    return None"
+    }
+  ]
