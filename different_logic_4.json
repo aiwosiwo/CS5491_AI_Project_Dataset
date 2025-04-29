@@ -1,0 +1,62 @@
+[
+  {
+    "function": "Check if a string is a palindrome",
+    "algorithm": "Two-pointer Technique",
+    "code1": "def ispalindrometwopointer(s):\n    return s == s[::-1]",
+    "code2": "def ispalindrometwopointerloop(s):\n    left, right = 0, len(s) - 1\n    while left < right:\n        if s[left] != s[right]:\n            return False\n        left += 1\n        right -= 1\n    return True"
+  },
+  {
+    "function": "Reverse the order of words in a string",
+    "algorithm": "Split and Reverse",
+    "code1": "def reversewordsplit(s):\n    return ' '.join(reversed(s.split()))",
+    "code2": "def reversewordmanipulate(s):\n    words = []\n    word = ''\n    for c in s:\n        if c == ' ':\n            words.append(word)\n            word = ''\n        else:\n            word += c\n    words.append(word)\n    return ' '.join(reversed(words))"
+  },
+  {
+    "function": "Find the maximum subarray sum",
+    "algorithm": "Kadane's Algorithm",
+    "code1": "def maxsubarraysumkadane(arr):\n    max_ending_here = max_so_far = arr[0]\n    for x in arr[1:]:\n        max_ending_here = max(x, max_ending_here + x)\n        max_so_far = max(max_so_far, max_ending_here)\n    return max_so_far",
+    "code2": "def maxsubarraysumkadanerecursive(arr, n):\n    if n == 0:\n        return arr[0]\n    max_ending_here = maxsubarraysumkadanerecursive(arr, n-1)\n    if max_ending_here < 0:\n        max_ending_here = 0\n    return max(arr[n], max_ending_here + arr[n])"
+  },
+  {
+    "function": "Implement a stack using two queues",
+    "algorithm": "Queue Operations",
+    "code1": "class StackUsingTwoQueues:\n    def __init__(self):\n        self.q1 = []\n        self.q2 = []\n    \n    def push(self, x):\n        self.q2.append(x)\n        while self.q1:\n            self.q2.append(self.q1.pop(0))\n        self.q1, self.q2 = self.q2, self.q1\n    \n    def pop(self):\n        return self.q1.pop(0)\n    \n    def top(self):\n        return self.q1[0]\n    \n    def empty(self):\n        return not self.q1",
+    "code2": "class StackUsingTwoQueuesAlt:\n    def __init__(self):\n        self.q1 = []\n        self.q2 = []\n    \n    def push(self, x):\n        self.q1.append(x)\n    \n    def pop(self):\n        while len(self.q1) > 1:\n            self.q2.append(self.q1.pop(0))\n        top_element = self.q1.pop(0)\n        self.q1, self.q2 = self.q2, self.q1\n        return top_element\n    \n    def top(self):\n        return self.q1[-1]\n    \n    def empty(self):\n        return not self.q1"
+  },
+  {
+    "function": "Implement a queue using two stacks",
+    "algorithm": "Stack Operations",
+    "code1": "class QueueUsingTwoStacks:\n    def __init__(self):\n        self.s1 = []\n        self.s2 = []\n    \n    def enqueue(self, x):\n        self.s1.append(x)\n    \n    def dequeue(self):\n        if not self.s2:\n            while self.s1:\n                self.s2.append(self.s1.pop())\n        return self.s2.pop()\n    \n    def front(self):\n        if not self.s2:\n            while self.s1:\n                self.s2.append(self.s1.pop())\n        return self.s2[-1]\n    \n    def empty(self):\n        return not self.s1 and not self.s2",
+    "code2": "class QueueUsingTwoStacksAlt:\n    def __init__(self):\n        self.s1 = []\n        self.s2 = []\n    \n    def enqueue(self, x):\n        while self.s1:\n            self.s2.append(self.s1.pop())\n        self.s1.append(x)\n        while self.s2:\n            self.s1.append(self.s2.pop())\n    \n    def dequeue(self):\n        return self.s1.pop()\n    \n    def front(self):\n        return self.s1[-1]\n    \n    def empty(self):\n        return not self.s1"
+  },
+  {
+    "function": "Check if a binary tree is a binary search tree",
+    "algorithm": "In-order Traversal",
+    "code1": "def isbstinorder(node, last_node=[None]):\n    if node:\n        if not isbstinorder(node.left, last_node):\n            return False\n        if last_node[0] and last_node[0].val >= node.val:\n            return False\n        last_node[0] = node\n        return isbstinorder(node.right, last_node)\n    return True",
+    "code2": "def isbstinorderiterative(root):\n    stack = []\n    prev = None\n    current = root\n    while stack or current:\n        while current:\n            stack.append(current)\n            current = current.left\n        current = stack.pop()\n        if prev and prev.val >= current.val:\n            return False\n        prev = current\n        current = current.right\n    return True"
+  },
+  {
+    "function": "Find the lowest common ancestor of two nodes in a binary tree",
+    "algorithm": "Single Traversal",
+    "code1": "def lowestcommonancestor(root, p, q):\n    if root is None or root == p or root == q:\n        return root\n    left = lowestcommonancestor(root.left, p, q)\n    right = lowestcommonancestor(root.right, p, q)\n    if left and right:\n        return root\n    return left if left else right",
+    "code2": "def lowestcommonancestoriterative(root, p, q):\n    parent = {root: None}\n    stack = [root]\n    while p not in parent or q not in parent:\n        node = stack.pop()\n        if node.left:\n            parent[node.left] = node\n            stack.append(node.left)\n        if node.right:\n            parent[node.right] = node\n            stack.append(node.right)\n    ancestors = set()\n    while p:\n        ancestors.add(p)\n        p = parent[p]\n    while q not in ancestors:\n        q = parent[q]\n    return q"
+  },
+  {
+    "function": "Serialize and deserialize a binary tree",
+    "algorithm": "Pre-order Traversal",
+    "code1": "def serializepreorder(root):\n    def encode(node):\n        return '#' if not node else str(node.val) + ' ' + encode(node.left) + ' ' + encode(node.right)\n    return encode(root)\n\ndef deserializepreorder(data):\n    def decode(values):\n        val = next(values)\n        if val == '#':\n            return None\n        node = TreeNode(int(val))\n        node.left = decode(values)\n        node.right = decode(values)\n        return node\n    values = iter(data.split())\n    return deserializepreorder(values)",
+    "code2": "def serializepreorderiterative(root):\n    if not root:\n        return '#'\n    stack, output = [root], []\n    while stack:\n        node = stack.pop()\n        if node:\n            output.append(str(node.val))\n            stack.append(node.right)\n            stack.append(node.left)\n        else:\n            output.append('#')\n    return ' '.join(output)\n\ndef deserializepreorderiterative(data):\n    if data == '#':\n        return None\n    nodes = map(lambda x: None if x == '#' else TreeNode(int(x)), data.split())\n    root = next(nodes)\n    stack = [root]\n    while stack:\n        node = stack.pop()\n        try:\n            node.left = next(nodes)\n            stack.append(node.left)\n            node.right = next(nodes)\n            stack.append(node.right)\n        except StopIteration:\n            pass\n    return root"
+  },
+  {
+    "function": "Implement a trie (prefix tree)",
+    "algorithm": "Trie Node Structure",
+    "code1": "class TrieNode:\n    def __init__(self):\n        self.children = {}\n        self.is_end_of_word = False\n\nclass Trie:\n    def __init__(self):\n        self.root = TrieNode()\n    \n    def insert(self, word):\n        node = self.root\n        for ch in word:\n            if ch not in node.children:\n                node.children[ch] = TrieNode()\n            node = node.children[ch]\n        node.is_end_of_word = True\n    \n    def search(self, word):\n        node = self.root\n        for ch in word:\n            if ch not in node.children:\n                return False\n            node = node.children[ch]\n        return node.is_end_of_word\n    \n    def startsWith(self, prefix):\n        node = self.root\n        for ch in prefix:\n            if ch not in node.children:\n                return False\n            node = node.children[ch]\n        return True",
+    "code2": "class TrieNodeAlt:\n    def __init__(self):\n        self.children = [None] * 26\n        self.is_end_of_word = False\n\nclass TrieAlt:\n    def __init__(self):\n        self.root = TrieNodeAlt()\n    \n    def insert(self, word):\n        node = self.root\n        for ch in word:\n            index = ord(ch) - ord('a')\n            if not node.children[index]:\n                node.children[index] = TrieNodeAlt()\n            node = node.children[index]\n        node.is_end_of_word = True\n    \n    def search(self, word):\n        node = self.root\n        for ch in word:\n            index = ord(ch) - ord('a')\n            if not node.children[index]:\n                return False\n            node = node.children[index]\n        return node.is_end_of_word\n    \n    def startsWith(self, prefix):\n        node = self.root\n        for ch in prefix:\n            index = ord(ch) - ord('a')\n            if not node.children[index]:\n                return False\n            node = node.children[index]\n        return True"
+  },
+  {
+    "function": "Calculate the edit distance between two strings",
+    "algorithm": "Dynamic Programming",
+    "code1": "def editdistancedp(s1, s2):\n    m, n = len(s1), len(s2)\n    dp = [[0] * (n + 1) for _ in range(m + 1)]\n    for i in range(m + 1):\n        dp[i][0] = i\n    for j in range(n + 1):\n        dp[0][j] = j\n    for i in range(1, m + 1):\n        for j in range(1, n + 1):\n            if s1[i - 1] == s2[j - 1]:\n                dp[i][j] = dp[i - 1][j - 1]\n            else:\n                dp[i][j] = 1 + min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1])\n    return dp[m][n]",
+    "code2": "def editdistancememo(s1, s2, m, n, memo={}):\n    if (m, n) in memo:\n        return memo[(m, n)]\n    if m == 0:\n        return n\n    if n == 0:\n        return m\n    if s1[m - 1] == s2[n - 1]:\n        memo[(m, n)] = editdistancememo(s1, s2, m - 1, n - 1, memo)\n    else:\n        memo[(m, n)] = 1 + min(\n            editdistancememo(s1, s2, m - 1, n, memo),\n            editdistancememo(s1, s2, m, n - 1, memo),\n            editdistancememo(s1, s2, m - 1, n - 1, memo)\n        )\n    return memo[(m, n)]\n\nreturn editdistancememo(s1, s2, len(s1), len(s2), {})"
+  }
+]

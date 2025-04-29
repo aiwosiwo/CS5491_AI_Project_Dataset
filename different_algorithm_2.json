@@ -1,0 +1,52 @@
+[
+    {
+        "function": "Sort a list",
+        "code1": "def bubble_sort(arr):\n    n = len(arr)\n    for i in range(n):\n        for j in range(0, n-i-1):\n            if arr[j] > arr[j+1]:\n                arr[j], arr[j+1] = arr[j+1], arr[j]\n    return arr",
+        "code2": "def quick_sort(arr):\n    if len(arr) <= 1:\n        return arr\n    pivot = arr[len(arr) // 2]\n    left = [x for x in arr if x < pivot]\n    middle = [x for x in arr if x == pivot]\n    right = [x for x in arr if x > pivot]\n    return quick_sort(left) + middle + quick_sort(right)"
+    },
+    {
+        "function": "Find the maximum element in a list",
+        "code1": "def find_max_element(arr):\n    max_element = arr[0]\n    for element in arr:\n        if element > max_element:\n            max_element = element\n    return max_element",
+        "code2": "def find_max_element_recursive(arr, index=0, max_element=float('-inf')):\n    if index == len(arr):\n        return max_element\n    if arr[index] > max_element:\n        max_element = arr[index]\n    return find_max_element_recursive(arr, index+1, max_element)"
+    },
+    {
+        "function": "Calculate the factorial of a number",
+        "code1": "def factorial_iterative(n):\n    result = 1\n    for i in range(1, n+1):\n        result *= i\n    return result",
+        "code2": "def factorial_recursive(n):\n    if n == 0:\n        return 1\n    else:\n        return n * factorial_recursive(n-1)"
+    },
+    {
+        "function": "Check if a string is a palindrome",
+        "code1": "def is_palindrome_iterative(s):\n    s = s.lower()\n    return s == s[::-1]",
+        "code2": "def is_palindrome_recursive(s, left=0, right=None):\n    if right is None:\n        right = len(s) - 1\n    if left >= right:\n        return True\n    if s[left].lower() != s[right].lower():\n        return False\n    return is_palindrome_recursive(s, left+1, right-1)"
+    },
+    {
+        "function": "Generate Fibonacci sequence",
+        "code1": "def fibonacci_iterative(n):\n    if n <= 1:\n        return n\n    a, b = 0, 1\n    for _ in range(2, n+1):\n        a, b = b, a + b\n    return b",
+        "code2": "def fibonacci_recursive(n):\n    if n <= 1:\n        return n\n    else:\n        return fibonacci_recursive(n-1) + fibonacci_recursive(n-2)"
+    },
+    {
+        "function": "Reverse a list",
+        "code1": "def reverse_list_iterative(arr):\n    return arr[::-1]",
+        "code2": "def reverse_list_recursive(arr, start=0, end=None):\n    if end is None:\n        end = len(arr) - 1\n    if start >= end:\n        return arr\n    arr[start], arr[end] = arr[end], arr[start]\n    return reverse_list_recursive(arr, start+1, end-1)"
+    },
+    {
+        "function": "Check if a number is prime",
+        "code1": "def is_prime_iterative(n):\n    if n <= 1:\n        return False\n    for i in range(2, int(n**0.5)+1):\n        if n % i == 0:\n            return False\n    return True",
+        "code2": "def is_prime_recursive(n, divisor=2):\n    if n <= 1:\n        return False\n    if divisor > int(n**0.5):\n        return True\n    if n % divisor == 0:\n        return False\n    return is_prime_recursive(n, divisor+1)"
+    },
+    {
+        "function": "Merge two sorted lists",
+        "code1": "def merge_sorted_lists_iterative(list1, list2):\n    return sorted(list1 + list2)",
+        "code2": "def merge_sorted_lists_recursive(list1, list2, merged=[]):\n    if not list1:\n        return merged + list2\n    if not list2:\n        return merged + list1\n    if list1[0] < list2[0]:\n        return merge_sorted_lists_recursive(list1[1:], list2, merged + [list1[0]])\n    else:\n        return merge_sorted_lists_recursive(list1, list2[1:], merged + [list2[0]])"
+    },
+    {
+        "function": "Calculate the sum of elements in a list",
+        "code1": "def sum_of_elements_iterative(arr):\n    total = 0\n    for element in arr:\n        total += element\n    return total",
+        "code2": "def sum_of_elements_recursive(arr, index=0, total=0):\n    if index == len(arr):\n        return total\n    return sum_of_elements_recursive(arr, index+1, total+arr[index])"
+    },
+    {
+        "function": "Find the second largest element in a list",
+        "code1": "def second_largest_element_iterative(arr):\n    first, second = float('-inf'), float('-inf')\n    for element in arr:\n        if element > first:\n            second = first\n            first = element\n        elif element > second and element != first:\n            second = element\n    return second",
+        "code2": "def second_largest_element_recursive(arr, first=float('-inf'), second=float('-inf'), index=0):\n    if index == len(arr):\n        return second\n    if arr[index] > first:\n        second = first\n        first = arr[index]\n    elif arr[index] > second and arr[index] != first:\n        second = arr[index]\n    return second_largest_element_recursive(arr, first, second, index+1)"
+    }
+]

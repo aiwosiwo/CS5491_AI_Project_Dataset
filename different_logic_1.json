@@ -1,0 +1,62 @@
+[
+  {
+    "function": "Sort an array of integers",
+    "algorithm": "Bubble Sort",
+    "code1": "def bubble_sort(arr):\n    n = len(arr)\n    for i in range(n):\n        for j in range(0, n-i-1):\n            if arr[j] > arr[j+1]:\n                arr[j], arr[j+1] = arr[j+1], arr[j]\n    return arr",
+    "code2": "def bubble_sort_optimized(arr):\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(0, n-i-1):\n            if arr[j] > arr[j+1]:\n                arr[j], arr[j+1] = arr[j+1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr"
+  },
+  {
+    "function": "Find the median of two sorted arrays",
+    "algorithm": "Binary Search",
+    "code1": "def find_median_sorted_arrays(nums1, nums2):\n    total_len = len(nums1) + len(nums2)\n    half_len = total_len // 2\n    if len(nums1) > len(nums2):\n        nums1, nums2 = nums2, nums1\n    imin, imax, median = 0, len(nums1), 0\n    while imin <= imax:\n        i = (imin + imax) // 2\n        j = half_len - i\n        if i < len(nums1) and nums2[j-1] > nums1[i]:\n            imin = i + 1\n        elif i > 0 and nums1[i-1] > nums2[j]:\n            imax = i - 1\n        else:\n            max_of_left = max(nums1[i-1] if i > 0 else float('-inf'),\n                            nums2[j-1] if j > 0 else float('-inf'))\n            if total_len % 2 == 1:\n                median = max_of_left\n                break\n            min_of_right = min(nums1[i] if i < len(nums1) else float('inf'),\n                              nums2[j] if j < len(nums2) else float('inf'))\n            median = (max_of_left + min_of_right) / 2.0\n            break\n    return median",
+    "code2": "def find_median_sorted_arrays_simple(nums1, nums2):\n    merged = sorted(nums1 + nums2)\n    len_merged = len(merged)\n    if len_merged % 2 == 0:\n        return (merged[len_merged // 2 - 1] + merged[len_merged // 2]) / 2\n    else:\n        return merged[len_merged // 2]"
+  },
+  {
+    "function": "Implement a stack using two queues",
+    "algorithm": "Queue Operations",
+    "code1": "class StackUsingQueues:\n    def __init__(self):\n        self.queue1 = []\n        self.queue2 = []\n    \n    def push(self, x):\n        self.queue2.append(x)\n        while self.queue1:\n            self.queue2.append(self.queue1.pop(0))\n        self.queue1, self.queue2 = self.queue2, self.queue1\n    \n    def pop(self):\n        return self.queue1.pop(0)\n    \n    def top(self):\n        return self.queue1[0]\n    \n    def empty(self):\n        return not self.queue1",
+    "code2": "class StackUsingQueuesAlt:\n    def __init__(self):\n        self.queue1 = []\n        self.queue2 = []\n    \n    def push(self, x):\n        self.queue1.append(x)\n    \n    def pop(self):\n        while len(self.queue1) > 1:\n            self.queue2.append(self.queue1.pop(0))\n        popped_element = self.queue1.pop(0)\n        self.queue1, self.queue2 = self.queue2, self.queue1\n        return popped_element\n    \n    def top(self):\n        while len(self.queue1) > 1:\n            self.queue2.append(self.queue1.pop(0))\n        top_element = self.queue1[0]\n        self.queue2.append(self.queue1.pop(0))\n        self.queue1, self.queue2 = self.queue2, self.queue1\n        return top_element\n    \n    def empty(self):\n        return not self.queue1"
+  },
+  {
+    "function": "Reverse a linked list",
+    "algorithm": "Iterative",
+    "code1": "def reverse_linked_list(head):\n    prev = None\n    current = head\n    while current:\n        next_node = current.next\n        current.next = prev\n        prev = current\n        current = next_node\n    return prev",
+    "code2": "def reverse_linked_list_recursive(head):\n    if not head or not head.next:\n        return head\n    new_head = reverse_linked_list_recursive(head.next)\n    head.next.next = head\n    head.next = None\n    return new_head"
+  },
+  {
+    "function": "Check if a number is a power of two",
+    "algorithm": "Bit Manipulation",
+    "code1": "def is_power_of_two(n):\n    return n > 0 and (n & (n - 1)) == 0",
+    "code2": "def is_power_of_two_recursive(n):\n    if n <= 0:\n        return False\n    if n == 1:\n        return True\n    if n % 2 != 0:\n        return False\n    return is_power_of_two_recursive(n // 2)"
+  },
+  {
+    "function": "Merge two binary trees",
+    "algorithm": "Tree Traversal",
+    "code1": "def merge_trees(t1, t2):\n    if not t1:\n        return t2\n    if not t2:\n        return t1\n    t1.val += t2.val\n    t1.left = merge_trees(t1.left, t2.left)\n    t1.right = merge_trees(t1.right, t2.right)\n    return t1",
+    "code2": "def merge_trees_iterative(t1, t2):\n    if not t1:\n        return t2\n    if not t2:\n        return t1\n    stack = [(t1, t2)]\n    while stack:\n        node1, node2 = stack.pop()\n        if not node1 or not node2:\n            continue\n        node1.val += node2.val\n        if not node1.left:\n            node1.left = node2.left\n        else:\n            stack.append((node1.left, node2.left))\n        if not node1.right:\n            node1.right = node2.right\n        else:\n            stack.append((node1.right, node2.right))\n    return t1"
+  },
+  {
+    "function": "Implement LRU cache",
+    "algorithm": "Hash Table and Doubly Linked List",
+    "code1": "class LRUCache:\n    def __init__(self, capacity):\n        self.cache = {}\n        self.capacity = capacity\n        self.recently_used = []\n    \n    def get(self, key):\n        if key in self.cache:\n            self.recently_used.remove(key)\n            self.recently_used.append(key)\n            return self.cache[key]\n        return -1\n    \n    def put(self, key, value):\n        if key in self.cache:\n            self.recently_used.remove(key)\n        elif len(self.cache) >= self.capacity:\n            oldest_key = self.recently_used.pop(0)\n            del self.cache[oldest_key]\n        self.cache[key] = value\n        self.recently_used.append(key)",
+    "code2": "class LRUCacheOptimized:\n    def __init__(self, capacity):\n        self.cache = {}\n        self.capacity = capacity\n        self.dll = DoublyLinkedList()\n        self.hash = {}\n    \n    def get(self, key):\n        if key not in self.cache:\n            return -1\n        node = self.hash[key]\n        self.dll.move_to_end(node)\n        return node.value\n    \n    def put(self, key, value):\n        if key in self.cache:\n            node = self.hash[key]\n            self.dll.move_to_end(node)\n            node.value = value\n        else:\n            if len(self.cache) >= self.capacity:\n                oldest_node = self.dll.pop_from_front()\n                del self.cache[oldest_node.key]\n                del self.hash[oldest_node.key]\n            new_node = Node(key, value)\n            self.dll.append(new_node)\n            self.cache[key] = value\n            self.hash[key] = new_node"
+  },
+  {
+    "function": "Serialize and deserialize a binary tree",
+    "algorithm": "Preorder Traversal",
+    "code1": "def serialize(root):\n    def encode(node):\n        return '#' if not node else str(node.val) + ' ' + encode(node.left) + ' ' + encode(node.right)\n    return encode(root)\n\ndef deserialize(data):\n    def decode(values):\n        val = next(values)\n        if val == '#':\n            return None\n        node = TreeNode(int(val))\n        node.left = decode(values)\n        node.right = decode(values)\n        return node\n    values = iter(data.split())\n    return decode(values)",
+    "code2": "def serialize_iterative(root):\n    if not root:\n        return ''\n    stack, output = [root], ''\n    while stack:\n        node = stack.pop()\n        if not node:\n            output += '# '\n        else:\n            output += str(node.val) + ' '\n            stack.append(node.right)\n            stack.append(node.left)\n    return output\n\ndef deserialize_iterative(data):\n    if not data:\n        return None\n    iter_data = iter(data.split())\n    root = TreeNode(int(next(iter_data)))\n    stack = [root]\n    while stack:\n        node = stack.pop()\n        try:\n            left_val = next(iter_data)\n            if left_val != '#':\n                node.left = TreeNode(int(left_val))\n                stack.append(node.left)\n            right_val = next(iter_data)\n            if right_val != '#':\n                node.right = TreeNode(int(right_val))\n                stack.append(node.right)\n        except StopIteration:\n            break\n    return root"
+  },
+  {
+    "function": "Calculate the maximum subarray sum",
+    "algorithm": "Kadane's Algorithm",
+    "code1": "def max_subarray_sum(nums):\n    max_current = max_global = nums[0]\n    for num in nums[1:]:\n        max_current = max(num, max_current + num)\n        max_global = max(max_global, max_current)\n    return max_global",
+    "code2": "def max_subarray_sum_divide_and_conquer(nums, left, right):\n    if left == right:\n        return nums[left]\n    mid = (left + right) // 2\n    left_sum = max_subarray_sum_divide_and_conquer(nums, left, mid)\n    right_sum = max_subarray_sum_divide_and_conquer(nums, mid + 1, right)\n    max_left_border_sum = max_right_border_sum = -float('inf')\n    left_border_sum = right_border_sum = 0\n    for i in range(mid, left - 1, -1):\n        left_border_sum += nums[i]\n        max_left_border_sum = max(max_left_border_sum, left_border_sum)\n    for i in range(mid + 1, right + 1):\n        right_border_sum += nums[i]\n        max_right_border_sum = max(max_right_border_sum, right_border_sum)\n    return max(left_sum, right_sum, max_left_border_sum + max_right_border_sum)"
+  },
+  {
+    "function": "Implement a trie (prefix tree)",
+    "algorithm": "Trie Data Structure",
+    "code1": "class TrieNode:\n    def __init__(self):\n        self.children = {}\n        self.is_end_of_word = False\n\nclass Trie:\n    def __init__(self):\n        self.root = TrieNode()\n    \n    def insert(self, word):\n        node = self.root\n        for char in word:\n            if char not in node.children:\n                node.children[char] = TrieNode()\n            node = node.children[char]\n        node.is_end_of_word = True\n    \n    def search(self, word):\n        node = self.root\n        for char in word:\n            if char not in node.children:\n                return False\n            node = node.children[char]\n        return node.is_end_of_word\n    \n    def startsWith(self, prefix):\n        node = self.root\n        for char in prefix:\n            if char not in node.children:\n                return False\n            node = node.children[char]\n        return True",
+    "code2": "class TrieAlt:\n    def __init__(self):\n        self.root = {}\n    \n    def insert(self, word):\n        node = self.root\n        for char in word:\n            if char not in node:\n                node[char] = {}\n            node = node[char]\n        node['#'] = '#'\n    \n    def search(self, word):\n        node = self.root\n        for char in word:\n            if char not in node:\n                return False\n            node = node[char]\n        return '#' in node\n    \n    def startsWith(self, prefix):\n        node = self.root\n        for char in prefix:\n            if char not in node:\n                return False\n            node = node[char]\n        return True"
+  }
+]

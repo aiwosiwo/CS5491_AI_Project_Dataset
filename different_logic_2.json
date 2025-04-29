@@ -1,0 +1,62 @@
+[
+  {
+    "function": "Reverse a string",
+    "algorithm": "Iterative",
+    "code1": "def reverse_iterative(s):\n    return s[::-1]",
+    "code2": "def reverse_iterative_stack(s):\n    stack = list(s)\n    reversed_str = ''\n    while stack:\n        reversed_str += stack.pop()\n    return reversed_str"
+  },
+  {
+    "function": "Check if a number is even",
+    "algorithm": "Modulo Operation",
+    "code1": "def is_even_modulo(n):\n    return n % 2 == 0",
+    "code2": "def is_even_bitwise(n):\n    return (n & 1) == 0"
+  },
+  {
+    "function": "Calculate the sum of a list",
+    "algorithm": "Iterative",
+    "code1": "def sum_list_iterative(arr):\n    total = 0\n    for num in arr:\n        total += num\n    return total",
+    "code2": "def sum_list_reduce(arr):\n    return reduce(lambda x, y: x + y, arr)"
+  },
+  {
+    "function": "Find the length of a string",
+    "algorithm": "Iterative",
+    "code1": "def length_string_iterative(s):\n    length = 0\n    for _ in s:\n        length += 1\n    return length",
+    "code2": "def length_string_reduce(s):\n    return reduce(lambda count, _: count + 1, s, 0)"
+  },
+  {
+    "function": "Check if a list is empty",
+    "algorithm": "Direct Check",
+    "code1": "def is_empty_direct(arr):\n    return not arr",
+    "code2": "def is_empty_length(arr):\n    return len(arr) == 0"
+  },
+  {
+    "function": "Clone a list",
+    "algorithm": "Slicing",
+    "code1": "def clone_list_slicing(arr):\n    return arr[:]",
+    "code2": "def clone_list_list(arr):\n    return list(arr)"
+  },
+  {
+    "function": "Check if two strings are anagrams",
+    "algorithm": "Sorting",
+    "code1": "def are_anagrams_sorting(s1, s2):\n    return sorted(s1) == sorted(s2)",
+    "code2": "def are_anagrams_count(s1, s2):\n    return all(s1.count(char) == s2.count(char) for char in set(s1))"
+  },
+  {
+    "function": "Remove duplicates from a list",
+    "algorithm": "Convert to Set",
+    "code1": "def remove_duplicates_set(arr):\n    return list(set(arr))",
+    "code2": "def remove_duplicates_loop(arr):\n    unique = []\n    for item in arr:\n        if item not in unique:\n            unique.append(item)\n    return unique"
+  },
+  {
+    "function": "Merge two sorted lists",
+    "algorithm": "Two Pointers",
+    "code1": "def merge_sorted_lists(arr1, arr2):\n    return sorted(arr1 + arr2)",
+    "code2": "def merge_sorted_lists_pointers(arr1, arr2):\n    merged = []\n    i = j = 0\n    while i < len(arr1) and j < len(arr2):\n        if arr1[i] < arr2[j]:\n            merged.append(arr1[i])\n            i += 1\n        else:\n            merged.append(arr2[j])\n            j += 1\n    return merged + arr1[i:] + arr2[j:]"
+  },
+  {
+    "function": "Check if a string contains only digits",
+    "algorithm": "Character Check",
+    "code1": "def contains_only_digits(s):\n    return s.isdigit()",
+    "code2": "def contains_only_digits_loop(s):\n    return all(char.isdigit() for char in s)"
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "function": "Find the nth Fibonacci number",
+    "algorithm": "Dynamic Programming",
+    "code1": "def fibonacci_dynamic(n):\n    fib_table = [0, 1]\n    for i in range(2, n+1):\n        fib_table.append(fib_table[i-1] + fib_table[i-2])\n    return fib_table[n]",
+    "code2": "def fibonacci_dynamic_optimized(n):\n    a, b = 0, 1\n    for i in range(n):\n        a, b = b, a + b\n    return a"
+  },
+  {
+    "function": "Check if a string is a palindrome",
+    "algorithm": "Two Pointers",
+    "code1": "def is_palindrome_two_pointers(s):\n    left, right = 0, len(s) - 1\n    while left < right:\n        if s[left] != s[right]:\n            return False\n        left += 1\n        right -= 1\n    return True",
+    "code2": "def is_palindrome_reverse(s):\n    return s == s[::-1]"
+  },
+  {
+    "function": "Implement a stack using two queues",
+    "algorithm": "Queue Operations",
+    "code1": "class StackUsingTwoQueues:\n    def __init__(self):\n        self.queue1 = []\n        self.queue2 = []\n    \n    def push(self, x):\n        self.queue2.append(x)\n        while self.queue1:\n            self.queue2.append(self.queue1.pop(0))\n        self.queue1, self.queue2 = self.queue2, self.queue1",
+    "code2": "class StackUsingTwoQueuesAlt:\n    def __init__(self):\n        self.queue1 = []\n        self.queue2 = []\n    \n    def push(self, x):\n        self.queue1.append(x)\n    \n    def pop(self):\n        while len(self.queue1) > 1:\n            self.queue2.append(self.queue1.pop(0))\n        self.queue1, self.queue2 = self.queue2, self.queue1\n        return self.queue1.pop(0)"
+  },
+  {
+    "function": "Implement a queue using two stacks",
+    "algorithm": "Stack Operations",
+    "code1": "class QueueUsingTwoStacks:\n    def __init__(self):\n        self.stack1 = []\n        self.stack2 = []\n    \n    def enqueue(self, x):\n        self.stack1.append(x)\n    \n    def dequeue(self):\n        if not self.stack2:\n            while self.stack1:\n                self.stack2.append(self.stack1.pop())\n        return self.stack2.pop()",
+    "code2": "class QueueUsingTwoStacksAlt:\n    def __init__(self):\n        self.stack1 = []\n        self.stack2 = []\n    \n    def enqueue(self, x):\n        while self.stack1:\n            self.stack2.append(self.stack1.pop())\n        self.stack1.append(x)\n        while self.stack2:\n            self.stack1.append(self.stack2.pop())\n    \n    def dequeue(self):\n        return self.stack1.pop()"
+  },
+  {
+    "function": "Reverse a linked list",
+    "algorithm": "Iterative",
+    "code1": "def reverse_linked_list(head):\n    prev = None\n    current = head\n    while current:\n        next_node = current.next\n        current.next = prev\n        prev = current\n        current = next_node\n    return prev",
+    "code2": "def reverse_linked_list_recursive(head):\n    if not head or not head.next:\n        return head\n    new_head = reverse_linked_list_recursive(head.next)\n    head.next.next = head\n    head.next = None\n    return new_head"
+  },
+  {
+    "function": "Find the intersection of two linked lists",
+    "algorithm": "Hash Table",
+    "code1": "def get_intersection_node_hash(headA, headB):\n    nodes_in_B = set()\n    while headB:\n        nodes_in_B.add(headB)\n        headB = headB.next\n    while headA:\n        if headA in nodes_in_B:\n            return headA\n        headA = headA.next\n    return None",
+    "code2": "def get_intersection_node_length(headA, headB):\n    lenA, lenB = 0, 0\n    tempA, tempB = headA, headB\n    while tempA:\n        lenA += 1\n        tempA = tempA.next\n    while tempB:\n        lenB += 1\n        tempB = tempB.next\n    tempA, tempB = headA, headB\n    if lenA > lenB:\n        for i in range(lenA - lenB):\n            tempA = tempA.next\n    else:\n        for i in range(lenB - lenA):\n            tempB = tempB.next\n    while tempA and tempB:\n        if tempA == tempB:\n            return tempA\n        tempA = tempA.next\n        tempB = tempB.next\n    return None"
+  },
+  {
+    "function": "Implement LRU cache",
+    "algorithm": "Hash Table and Doubly Linked List",
+    "code1": "class LRUCache:\n    def __init__(self, capacity):\n        self.cache = {}\n        self.capacity = capacity\n        self.recently_used = []\n    \n    def get(self, key):\n        if key in self.cache:\n            self.recently_used.remove(key)\n            self.recently_used.append(key)\n            return self.cache[key]\n        return -1\n    \n    def put(self, key, value):\n        if key in self.cache:\n            self.recently_used.remove(key)\n        elif len(self.cache) >= self.capacity:\n            oldest_key = self.recently_used.pop(0)\n            del self.cache[oldest_key]\n        self.cache[key] = value\n        self.recently_used.append(key)",
+    "code2": "class LRUCacheOptimized:\n    def __init__(self, capacity):\n        self.cache = {}\n        self.capacity = capacity\n        self.order = []\n    \n    def get(self, key):\n        if key not in self.cache:\n            return -1\n        self.order.remove(key)\n        self.order.append(key)\n        return self.cache[key]\n    \n    def put(self, key, value):\n        if key in self.cache:\n            self.order.remove(key)\n        elif len(self.cache) == self.capacity:\n            oldest_key = self.order.pop(0)\n            del self.cache[oldest_key]\n        self.cache[key] = value\n        self.order.append(key)"
+  },
+  {
+    "function": "Serialize and deserialize a binary tree",
+    "algorithm": "Preorder Traversal",
+    "code1": "def serialize(root):\n    def preorder(node):\n        return [] if not node else [str(node.val)] + preorder(node.left) + preorder(node.right)\n    return ','.join(preorder(root))\n\ndef deserialize(data):\n    def build_tree(nodes):\n        val = next(nodes)\n        if val == '#':\n            return None\n        node = TreeNode(int(val))\n        node.left = build_tree(nodes)\n        node.right = build_tree(nodes)\n        return node\n    nodes = iter(data.split(','))\n    return build_tree(nodes)",
+    "code2": "def serialize_iterative(root):\n    if not root:\n        return '#'\n    stack, output = [root], []\n    while stack:\n        node = stack.pop()\n        if not node:\n            output.append('#')\n        else:\n            output.append(str(node.val))\n            stack.append(node.right)\n            stack.append(node.left)\n    return ','.join(output)\n\ndef deserialize_iterative(data):\n    if data == '#':\n        return None\n    nodes = iter(data.split(','))\n    root = TreeNode(int(next(nodes)))\n    stack = [root]\n    while stack:\n        node = stack.pop()\n        if next(nodes) != '#':\n            node.right = TreeNode(int(next(nodes)))\n            stack.append(node.right)\n        if next(nodes) != '#':\n            node.left = TreeNode(int(next(nodes)))\n            stack.append(node.left)\n    return root"
+  },
+  {
+    "function": "Find the kth largest element in a stream",
+    "algorithm": "Min Heap",
+    "code1": "class KthLargest:\n    def __init__(self, k, nums):\n        self.k = k\n        self.min_heap = nums\n        heapq.heapify(self.min_heap)\n        while len(self.min_heap) > k:\n            heapq.heappop(self.min_heap)\n    \n    def add(self, val):\n        heapq.heappush(self.min_heap, val)\n        if len(self.min_heap) > self.k:\n            heapq.heappop(self.min_heap)\n        return self.min_heap[0]",
+    "code2": "class KthLargestAlt:\n    def __init__(self, k, nums):\n        self.k = k\n        self.stream = sorted(nums, reverse=True)\n    \n    def add(self, val):\n        self.stream.append(val)\n        self.stream.sort(reverse=True)\n        return self.stream[self.k-1] if self.k <= len(self.stream) else None"
+  },
+  {
+    "function": "Calculate the edit distance between two strings",
+    "algorithm": "Dynamic Programming",
+    "code1": "def edit_distance_dp(s1, s2):\n    m, n = len(s1), len(s2)\n    dp = [[0] * (n+1) for _ in range(m+1)]\n    for i in range(m+1):\n        dp[i][0] = i\n    for j in range(n+1):\n        dp[0][j] = j\n    for i in range(1, m+1):\n        for j in range(1, n+1):\n            if s1[i-1] == s2[j-1]:\n                dp[i][j] = dp[i-1][j-1]\n            else:\n                dp[i][j] = 1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])\n    return dp[m][n]",
+    "code2": "def edit_distance_recursive(s1, s2, m, n, memo):\n    if m == 0:\n        return n\n    if n == 0:\n        return m\n    if (m, n) in memo:\n        return memo[(m, n)]\n    if s1[m-1] == s2[n-1]:\n        memo[(m, n)] = edit_distance_recursive(s1, s2, m-1, n-1, memo)\n    else:\n        memo[(m, n)] = 1 + min(\n            edit_distance_recursive(s1, s2, m-1, n, memo),\n            edit_distance_recursive(s1, s2, m, n-1, memo),\n            edit_distance_recursive(s1, s2, m-1, n-1, memo)\n        )\n    return memo[(m, n)]\n\nreturn edit_distance_recursive(s1, s2, len(s1), len(s2), {})"
+  }
+]

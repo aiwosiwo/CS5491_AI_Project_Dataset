@@ -1,0 +1,52 @@
+[
+    {
+        "function": "Encrypt a string using Caesar cipher",
+        "code1": "def caesar_cipher_encrypt(text, shift):\n    result = ''\n    for char in text:\n        if char.isalpha():\n            shifted = ord(char) + shift\n            if char.islower():\n                if shifted > ord('z'):\n                    shifted -= 26\n                elif shifted < ord('a'):\n                    shifted += 26\n            elif char.isupper():\n                if shifted > ord('Z'):\n                    shifted -= 26\n                elif shifted < ord('A'):\n                    shifted += 26\n            result += chr(shifted)\n        else:\n            result += char\n    return result",
+        "code2": "def caesar_cipher_encrypt_recursive(text, shift, index=0, result=''):\n    if index == len(text):\n        return result\n    char = text[index]\n    if char.isalpha():\n        shifted = ord(char) + shift\n        if char.islower():\n            if shifted > ord('z'):\n                shifted -= 26\n            elif shifted < ord('a'):\n                shifted += 26\n        elif char.isupper():\n            if shifted > ord('Z'):\n                shifted -= 26\n            elif shifted < ord('A'):\n                shifted += 26\n        result += chr(shifted)\n    else:\n        result += char\n    return caesar_cipher_encrypt_recursive(text, shift, index+1, result)"
+    },
+    {
+        "function": "Decrypt a string using Caesar cipher",
+        "code1": "def caesar_cipher_decrypt(text, shift):\n    result = ''\n    for char in text:\n        if char.isalpha():\n            shifted = ord(char) - shift\n            if char.islower():\n                if shifted < ord('a'):\n                    shifted += 26\n                elif shifted > ord('z'):\n                    shifted -= 26\n            elif char.isupper():\n                if shifted < ord('A'):\n                    shifted += 26\n                elif shifted > ord('Z'):\n                    shifted -= 26\n            result += chr(shifted)\n        else:\n            result += char\n    return result",
+        "code2": "def caesar_cipher_decrypt_recursive(text, shift, index=0, result=''):\n    if index == len(text):\n        return result\n    char = text[index]\n    if char.isalpha():\n        shifted = ord(char) - shift\n        if char.islower():\n            if shifted < ord('a'):\n                shifted += 26\n            elif shifted > ord('z'):\n                shifted -= 26\n        elif char.isupper():\n            if shifted < ord('A'):\n                shifted += 26\n            elif shifted > ord('Z'):\n                shifted -= 26\n        result += chr(shifted)\n    else:\n        result += char\n    return caesar_cipher_decrypt_recursive(text, shift, index+1, result)"
+    },
+    {
+        "function": "Check if a number is a perfect square",
+        "code1": "def is_perfect_square_iterative(n):\n    if n < 0:\n        return False\n    root = int(n**0.5)\n    return root*root == n",
+        "code2": "def is_perfect_square_recursive(n, start=0, end=None):\n    if end is None:\n        end = n\n    if start > end:\n        return False\n    mid = (start + end) // 2\n    mid_squared = mid * mid\n    if mid_squared == n:\n        return True\n    elif mid_squared < n:\n        return is_perfect_square_recursive(n, mid+1, end)\n    else:\n        return is_perfect_square_recursive(n, start, mid-1)"
+    },
+    {
+        "function": "Calculate the nth Fibonacci number using matrix exponentiation",
+        "code1": "def matrix_multiply(a, b):\n    return [[sum(x * y for x, y in zip(a_row, b_col)) for b_col in zip(*b)] for a_row in a]\n\ndef matrix_power(matrix, n):\n    result = [[1 if i == j else 0 for i in range(len(matrix))] for j in range(len(matrix))]\n    while n > 0:\n        if n % 2 == 1:\n            result = matrix_multiply(result, matrix)\n        matrix = matrix_multiply(matrix, matrix)\n        n //= 2\n    return result\n\ndef fibonacci_matrix_exponentiation(n):\n    if n == 0:\n        return 0\n    matrix = [[1, 1], [1, 0]]\n    powered_matrix = matrix_power(matrix, n-1)\n    return powered_matrix[0][0]",
+        "code2": "def fibonacci_matrix_exponentiation_recursive(n, matrix=[[1, 1], [1, 0]], result=[[1, 0], [0, 1]]):\n    if n == 0:\n        return result[0][0]\n    if n % 2 == 1:\n        result = matrix_multiply(result, matrix)\n    return fibonacci_matrix_exponentiation_recursive(n // 2, matrix_multiply(matrix, matrix), result)"
+    },
+    {
+        "function": "Find the longest common subsequence of two strings",
+        "code1": "def longest_common_subsequence_iterative(str1, str2):\n    m, n = len(str1), len(str2)\n    dp = [[0] * (n+1) for _ in range(m+1)]\n    for i in range(1, m+1):\n        for j in range(1, n+1):\n            if str1[i-1] == str2[j-1]:\n                dp[i][j] = dp[i-1][j-1] + 1\n            else:\n                dp[i][j] = max(dp[i-1][j], dp[i][j-1])\n    return dp[m][n]",
+        "code2": "def longest_common_subsequence_recursive(str1, str2, m=None, n=None):\n    if m is None or n is None:\n        m, n = len(str1), len(str2)\n    if m == 0 or n == 0:\n        return 0\n    if str1[m-1] == str2[n-1]:\n        return 1 + longest_common_subsequence_recursive(str1, str2, m-1, n-1)\n    else:\n        return max(longest_common_subsequence_recursive(str1, str2, m-1, n), longest_common_subsequence_recursive(str1, str2, m, n-1))"
+    },
+    {
+        "function": "Generate all permutations of a list",
+        "code1": "def permutations_iterative(lst):\n    result = [[]]\n    for item in lst:\n        result = [curr + [item] for curr in result for _ in range(len(lst) - len(curr))]\n    return result",
+        "code2": "def permutations_recursive(lst, path=[], result=[]):\n    if not lst:\n        result.append(path)\n        return\n    for i in range(len(lst)):\n        permutations_recursive(lst[:i] + lst[i+1:], path + [lst[i]], result)\n    return result"
+    },
+    {
+        "function": "Check if a graph is bipartite",
+        "code1": "def is_bipartite_iterative(graph):\n    color = {}\n    for node in graph:\n        if node not in color:\n            stack = [node]\n            color[node] = 0\n            while stack:\n                node = stack.pop()\n                for neighbor in graph[node]:\n                    if neighbor not in color:\n                        stack.append(neighbor)\n                        color[neighbor] = 1 - color[node]\n                    elif color[neighbor] == color[node]:\n                        return False\n    return True",
+        "code2": "def is_bipartite_recursive(graph, node, color, c=0):\n    if node in color:\n        return color[node] == c\n    color[node] = c\n    return all(is_bipartite_recursive(graph, neighbor, color, 1-c) for neighbor in graph[node])"
+    },
+    {
+        "function": "Calculate the edit distance between two strings",
+        "code1": "def edit_distance_iterative(str1, str2):\n    m, n = len(str1), len(str2)\n    dp = [[0] * (n+1) for _ in range(m+1)]\n    for i in range(m+1):\n        for j in range(n+1):\n            if i == 0:\n                dp[i][j] = j\n            elif j == 0:\n                dp[i][j] = i\n            elif str1[i-1] == str2[j-1]:\n                dp[i][j] = dp[i-1][j-1]\n            else:\n                dp[i][j] = 1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])\n    return dp[m][n]",
+        "code2": "def edit_distance_recursive(str1, str2, m=None, n=None):\n    if m is None or n is None:\n        m, n = len(str1), len(str2)\n    if m == 0:\n        return n\n    if n == 0:\n        return m\n    if str1[m-1] == str2[n-1]:\n        return edit_distance_recursive(str1, str2, m-1, n-1)\n    return 1 + min(edit_distance_recursive(str1, str2, m-1, n), edit_distance_recursive(str1, str2, m, n-1), edit_distance_recursive(str1, str2, m-1, n-1))"
+    },
+    {
+        "function": "Find the kth smallest element in a binary search tree",
+        "code1": "def kth_smallest_element_iterative(root, k):\n    stack = []\n    current = root\n    while stack or current:\n        while current:\n            stack.append(current)\n            current = current.left\n        current = stack.pop()\n        k -= 1\n        if k == 0:\n            return current.val\n        current = current.right",
+        "code2": "def kth_smallest_element_recursive(root, k, result=None):\n    if result is None:\n        result = []\n    if root:\n        kth_smallest_element_recursive(root.left, k, result)\n        result.append(root.val)\n        if len(result) == k:\n            return result[-1]\n        kth_smallest_element_recursive(root.right, k, result)\n    return result[-1] if result else None"
+    },
+    {
+        "function": "Check if a linked list has a cycle",
+        "code1": "def has_cycle_iterative(head):\n    slow = fast = head\n    while fast and fast.next:\n        slow = slow.next\n        fast = fast.next.next\n        if slow == fast:\n            return True\n    return False",
+        "code2": "def has_cycle_recursive(head, visited=None):\n    if visited is None:\n        visited = set()\n    if head in visited:\n        return True\n    if not head or not head.next:\n        return False\n    visited.add(head)\n    return has_cycle_recursive(head.next, visited)"
+    }
+]

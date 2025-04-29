@@ -1,0 +1,52 @@
+[
+    {
+        "function": "Sort a list using different algorithms",
+        "code1": "def heap_sort(arr):\n    def heapify(arr, n, i):\n        largest = i\n        left = 2 * i + 1\n        right = 2 * i + 2\n        if left < n and arr[largest] < arr[left]:\n            largest = left\n        if right < n and arr[largest] < arr[right]:\n            largest = right\n        if largest != i:\n            arr[i], arr[largest] = arr[largest], arr[i]\n            heapify(arr, n, largest)\n    n = len(arr)\n    for i in range(n // 2 - 1, -1, -1):\n        heapify(arr, n, i)\n    for i in range(n-1, 0, -1):\n        arr[i], arr[0] = arr[0], arr[i]\n        heapify(arr, i, 0)\n    return arr",
+        "code2": "def merge_sort(arr):\n    if len(arr) > 1:\n        mid = len(arr) // 2\n        L = arr[:mid]\n        R = arr[mid:]\n        merge_sort(L)\n        merge_sort(R)\n        i = j = k = 0\n        while i < len(L) and j < len(R):\n            if L[i] < R[j]:\n                arr[k] = L[i]\n                i += 1\n            else:\n                arr[k] = R[j]\n                j += 1\n            k += 1\n        while i < len(L):\n            arr[k] = L[i]\n            i += 1\n            k += 1\n        while j < len(R):\n            arr[k] = R[j]\n            j += 1\n            k += 1\n    return arr"
+    },
+    {
+        "function": "Find the minimum element in a list",
+        "code1": "def find_min_element_iterative(arr):\n    min_element = arr[0]\n    for element in arr:\n        if element < min_element:\n            min_element = element\n    return min_element",
+        "code2": "def find_min_element_recursive(arr, index=0, min_element=float('inf')):\n    if index == len(arr):\n        return min_element\n    if arr[index] < min_element:\n        min_element = arr[index]\n    return find_min_element_recursive(arr, index+1, min_element)"
+    },
+    {
+        "function": "Calculate the square of a number",
+        "code1": "def square_iterative(n):\n    result = 0\n    for i in range(n):\n        result += n\n    return result",
+        "code2": "def square_recursive(n):\n    if n == 0:\n        return 0\n    else:\n        return n + square_recursive(n-1)"
+    },
+    {
+        "function": "Check if a number is even",
+        "code1": "def is_even_iterative(n):\n    while n > 1:\n        n -= 2\n    return n == 0",
+        "code2": "def is_even_recursive(n):\n    if n == 0:\n        return True\n    if n == 1:\n        return False\n    return is_even_recursive(n-2)"
+    },
+    {
+        "function": "Generate the power of a number",
+        "code1": "def power_iterative(base, exp):\n    result = 1\n    for _ in range(exp):\n        result *= base\n    return result",
+        "code2": "def power_recursive(base, exp):\n    if exp == 0:\n        return 1\n    else:\n        return base * power_recursive(base, exp-1)"
+    },
+    {
+        "function": "Reverse a string",
+        "code1": "def reverse_string_iterative(s):\n    return s[::-1]",
+        "code2": "def reverse_string_recursive(s):\n    if len(s) == 0:\n        return s\n    else:\n        return reverse_string_recursive(s[1:]) + s[0]"
+    },
+    {
+        "function": "Check if a list is sorted",
+        "code1": "def is_sorted_iterative(arr):\n    for i in range(1, len(arr)):\n        if arr[i] < arr[i-1]:\n            return False\n    return True",
+        "code2": "def is_sorted_recursive(arr, index=1):\n    if index == len(arr):\n        return True\n    if arr[index] < arr[index-1]:\n        return False\n    return is_sorted_recursive(arr, index+1)"
+    },
+    {
+        "function": "Remove duplicates from a list",
+        "code1": "def remove_duplicates_iterative(arr):\n    unique_list = []\n    for element in arr:\n        if element not in unique_list:\n            unique_list.append(element)\n    return unique_list",
+        "code2": "def remove_duplicates_recursive(arr, index=0, unique_list=None):\n    if unique_list is None:\n        unique_list = []\n    if index == len(arr):\n        return unique_list\n    if arr[index] not in unique_list:\n        unique_list.append(arr[index])\n    return remove_duplicates_recursive(arr, index+1, unique_list)"
+    },
+    {
+        "function": "Calculate the product of elements in a list",
+        "code1": "def product_of_elements_iterative(arr):\n    product = 1\n    for element in arr:\n        product *= element\n    return product",
+        "code2": "def product_of_elements_recursive(arr, index=0, product=1):\n    if index == len(arr):\n        return product\n    return product_of_elements_recursive(arr, index+1, product*arr[index])"
+    },
+    {
+        "function": "Find the third largest element in a list",
+        "code1": "def third_largest_element_iterative(arr):\n    first, second, third = float('-inf'), float('-inf'), float('-inf')\n    for element in arr:\n        if element > first:\n            third = second\n            second = first\n            first = element\n        elif element > second and element != first:\n            third = second\n            second = element\n        elif element > third and element != first and element != second:\n            third = element\n    return third",
+        "code2": "def third_largest_element_recursive(arr, first=float('-inf'), second=float('-inf'), third=float('-inf'), index=0):\n    if index == len(arr):\n        return third\n    if arr[index] > first:\n        third = second\n        second = first\n        first = arr[index]\n    elif arr[index] > second and arr[index] != first:\n        third = second\n        second = arr[index]\n    elif arr[index] > third and arr[index] != first and arr[index] != second:\n        third = arr[index]\n    return third_largest_element_recursive(arr, first, second, third, index+1)"
+    }
+]

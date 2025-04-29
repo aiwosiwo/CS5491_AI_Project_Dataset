@@ -1,0 +1,52 @@
+[
+    {
+        "function": "Encrypt a string using Caesar cipher",
+        "code1": "def caesar_cipher_encrypt(text, shift):\n    result = ''\n    for char in text:\n        if char.isalpha():\n            shifted = ord(char) + shift\n            if char.islower():\n                if shifted > ord('z'):\n                    shifted -= 26\n                elif shifted < ord('a'):\n                    shifted += 26\n            elif char.isupper():\n                if shifted > ord('Z'):\n                    shifted -= 26\n                elif shifted < ord('A'):\n                    shifted += 26\n            result += chr(shifted)\n        else:\n            result += char\n    return result",
+        "code2": "def caesar_cipher_encrypt_recursive(text, shift, index=0, result=''):\n    if index == len(text):\n        return result\n    char = text[index]\n    if char.isalpha():\n        shifted = ord(char) + shift\n        if char.islower():\n            if shifted > ord('z'):\n                shifted -= 26\n            elif shifted < ord('a'):\n                shifted += 26\n        elif char.isupper():\n            if shifted > ord('Z'):\n                shifted -= 26\n            elif shifted < ord('A'):\n                shifted += 26\n        result += chr(shifted)\n    else:\n        result += char\n    return caesar_cipher_encrypt_recursive(text, shift, index+1, result)"
+    },
+    {
+        "function": "Decrypt a string using Caesar cipher",
+        "code1": "def caesar_cipher_decrypt(text, shift):\n    result = ''\n    for char in text:\n        if char.isalpha():\n            shifted = ord(char) - shift\n            if char.islower():\n                if shifted < ord('a'):\n                    shifted += 26\n                elif shifted > ord('z'):\n                    shifted -= 26\n            elif char.isupper():\n                if shifted < ord('A'):\n                    shifted += 26\n                elif shifted > ord('Z'):\n                    shifted -= 26\n            result += chr(shifted)\n        else:\n            result += char\n    return result",
+        "code2": "def caesar_cipher_decrypt_recursive(text, shift, index=0, result=''):\n    if index == len(text):\n        return result\n    char = text[index]\n    if char.isalpha():\n        shifted = ord(char) - shift\n        if char.islower():\n            if shifted < ord('a'):\n                shifted += 26\n            elif shifted > ord('z'):\n                shifted -= 26\n        elif char.isupper():\n            if shifted < ord('A'):\n                shifted += 26\n            elif shifted > ord('Z'):\n                shifted -= 26\n        result += chr(shifted)\n    else:\n        result += char\n    return caesar_cipher_decrypt_recursive(text, shift, index+1, result)"
+    },
+    {
+        "function": "Check if a number is a perfect square",
+        "code1": "def is_perfect_square_iterative(n):\n    if n < 0:\n        return False\n    root = int(n**0.5)\n    return root*root == n",
+        "code2": "def is_perfect_square_recursive(n, start=0, end=None):\n    if end is None:\n        end = n\n    if start > end:\n        return False\n    mid = (start + end) // 2\n    mid_squared = mid * mid\n    if mid_squared == n:\n        return True\n    elif mid_squared < n:\n        return is_perfect_square_recursive(n, mid+1, end)\n    else:\n        return is_perfect_square_recursive(n, start, mid-1)"
+    },
+    {
+        "function": "Calculate the nth Fibonacci number using matrix exponentiation",
+        "code1": "def matrix_multiply(a, b):\n    return [[sum(x * y for x, y in zip(a_row, b_col)) for b_col in zip(*b)] for a_row in a]\n\ndef matrix_power(matrix, n):\n    result = [[1 if i == j else 0 for i in range(len(matrix))] for j in range(len(matrix))]\n    while n > 0:\n        if n % 2 == 1:\n            result = matrix_multiply(result, matrix)\n        matrix = matrix_multiply(matrix, matrix)\n        n //= 2\n    return result\n\ndef fibonacci_matrix_exponentiation(n):\n    if n == 0:\n        return 0\n    matrix = [[1, 1], [1, 0]]\n    powered_matrix = matrix_power(matrix, n-1)\n    return powered_matrix[0][0]",
+        "code2": "def fibonacci_matrix_exponentiation_recursive(n, matrix=[[1, 1], [1, 0]], result=[[1, 0], [0, 1]]):\n    if n == 0:\n        return result[0][0]\n    if n % 2 == 1:\n        result = matrix_multiply(result, matrix)\n    return fibonacci_matrix_exponentiation_recursive(n // 2, matrix_multiply(matrix, matrix), result)"
+    },
+    {
+        "function": "Find the longest common substring of two strings",
+        "code1": "def longest_common_substring_iterative(str1, str2):\n    if not str1 or not str2:\n        return ''\n    dp = [[0] * (len(str2) + 1) for _ in range(len(str1) + 1)]\n    longest_length = 0\n    end_index_str1 = 0\n    for i in range(1, len(str1) + 1):\n        for j in range(1, len(str2) + 1):\n            if str1[i-1] == str2[j-1]:\n                dp[i][j] = dp[i-1][j-1] + 1\n                if dp[i][j] > longest_length:\n                    longest_length = dp[i][j]\n                    end_index_str1 = i\n    return str1[end_index_str1 - longest_length: end_index_str1]",
+        "code2": "def longest_common_substring_recursive(str1, str2, i=0, j=0, count=0, longest=''):\n    if i == len(str1) or j == len(str2):\n        return longest\n    if str1[i] == str2[j]:\n        new_longest = longest_common_substring_recursive(str1, str2, i+1, j+1, count+1, longest + str1[i])\n        if len(new_longest) > len(longest):\n            return new_longest\n    return max(longest, longest_common_substring_recursive(str1, str2, i+1, j, 0, ''), longest_common_substring_recursive(str1, str2, i, j+1, 0, ''))"
+    },
+    {
+        "function": "Check if two strings are anagrams",
+        "code1": "def are_anagrams_iterative(str1, str2):\n    return sorted(str1) == sorted(str2)",
+        "code2": "def are_anagrams_recursive(str1, str2, memo={}):\n    if len(str1) != len(str2):\n        return False\n    if not str1 and not str2:\n        return True\n    if str1[0] not in memo:\n        memo[str1[0]] = str2.count(str1[0])\n    if memo[str1[0]] == 0:\n        return False\n    memo[str1[0]] -= 1\n    return are_anagrams_recursive(str1[1:], str2.replace(str1[0], '', 1), memo)"
+    },
+    {
+        "function": "Calculate the power of a number",
+        "code1": "def power_iterative(base, exponent):\n    result = 1\n    for _ in range(abs(exponent)):\n        result *= base\n    return result if exponent >= 0 else 1 / result",
+        "code2": "def power_recursive(base, exponent, result=1):\n    if exponent == 0:\n        return result\n    if exponent < 0:\n        return power_recursive(1 / base, -exponent, result)\n    return power_recursive(base, exponent - 1, result * base)"
+    },
+    {
+        "function": "Find the kth smallest element in an unsorted array",
+        "code1": "def kth_smallest_element_iterative(arr, k):\n    arr.sort()\n    return arr[k-1]",
+        "code2": "def kth_smallest_element_recursive(arr, k, start=0, end=None):\n    if end is None:\n        end = len(arr) - 1\n    if start == end:\n        return arr[start]\n    pivot_index = partition(arr, start, end)\n    if k == pivot_index:\n        return arr[k]\n    elif k < pivot_index:\n        return kth_smallest_element_recursive(arr, k, start, pivot_index - 1)\n    else:\n        return kth_smallest_element_recursive(arr, k, pivot_index + 1, end)"
+    },
+    {
+        "function": "Check if a linked list has a cycle",
+        "code1": "def has_cycle_iterative(head):\n    slow = fast = head\n    while fast and fast.next:\n        slow = slow.next\n        fast = fast.next.next\n        if slow == fast:\n            return True\n    return False",
+        "code2": "def has_cycle_recursive(slow, fast=None, memo=set()):\n    if not fast:\n        fast = slow\n    if not slow or not fast.next or not fast.next.next:\n        return False\n    if slow in memo:\n        return True\n    memo.add(slow)\n    return has_cycle_recursive(slow.next, fast.next.next, memo)"
+    },
+    {
+        "function": "Implement a stack using two queues",
+        "code1": "from collections import deque\nclass StackUsingTwoQueues:\n    def __init__(self):\n        self.queue1 = deque()\n        self.queue2 = deque()\n    def push(self, item):\n        self.queue2.append(item)\n        while self.queue1:\n            self.queue2.append(self.queue1.popleft())\n        self.queue1, self.queue2 = self.queue2, self.queue1\n    def pop(self):\n        if not self.queue1:\n            return None\n        return self.queue1.popleft()",
+        "code2": "from collections import deque\nclass StackUsingTwoQueues:\n    def __init__(self):\n        self.queue1 = deque()\n        self.queue2 = deque()\n    def push(self, item):\n        self.queue1.append(item)\n    def pop(self):\n        if not self.queue1:\n            return None\n        while len(self.queue1) > 1:\n            self.queue2.append(self.queue1.popleft())\n        self.queue1, self.queue2 = self.queue2, self.queue1\n        return self.queue1.popleft()"
+    }
+]
